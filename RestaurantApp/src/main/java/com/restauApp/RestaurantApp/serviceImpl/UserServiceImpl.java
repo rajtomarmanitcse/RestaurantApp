@@ -1,6 +1,7 @@
 package com.restauApp.RestaurantApp.serviceImpl;
 
 import com.restauApp.RestaurantApp.Repository.UserRepository;
+import com.restauApp.RestaurantApp.model.Login;
 import com.restauApp.RestaurantApp.model.User;
 import com.restauApp.RestaurantApp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,15 +42,25 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(User user) {
-        if(user.getUserId() != null){
+        if(user.getUserId() != null) {
             Optional<User> tempUser = repository.findById(user.getUserId());
 
-            if(tempUser.isPresent() && tempUser.get().getIsActive() && !user.getCity().equals(tempUser.get().getCity())){
-                tempUser.get().setCity(user.getCity());
+            if (tempUser.isPresent() && tempUser.get().getIsActive()) {
+                if (!user.getCity().equals(tempUser.get().getCity())) {
+                    tempUser.get().setCity(user.getCity());
+                }
+
+                Login login = tempUser.get().getLogin();
+
+                if(!user.getLogin().getPassWord().equals(login.getPassWord())){
+                    tempUser.get().getLogin().setPassWord(user.getLogin().getPassWord());
+                }
                 return repository.save(tempUser.get());
-            }else
+
+            } else
                 return null;
         }
+
 
         return null;
     }

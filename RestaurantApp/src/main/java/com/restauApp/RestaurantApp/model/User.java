@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.List;
 
 @Entity
 public class User {
@@ -20,8 +21,11 @@ public class User {
     private String lastName;
     @Column(nullable = false,length = 25)
     private String city;
-    @Column(nullable = false,length = 10)
-    private Long mobileNo;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "mobileNo", referencedColumnName = "mobile")
+    private Login login;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Booking> booking;
     @Column(nullable = false)
     private Boolean isActive;
     @Column(nullable = false,updatable = false)
@@ -60,10 +64,6 @@ public class User {
         return city;
     }
 
-    public Long getMobileNo() {
-        return mobileNo;
-    }
-
     public Boolean getIsActive() {
         return isActive;
     }
@@ -92,11 +92,23 @@ public class User {
         this.city = city;
     }
 
-    public void setMobileNo(Long mobileNo) {
-        this.mobileNo = mobileNo;
-    }
-
     public void setIsActive(Boolean active) {
         isActive = active;
+    }
+
+    public Login getLogin() {
+        return login;
+    }
+
+    public void setLogin(Login login) {
+        this.login = login;
+    }
+
+    public List<Booking> getBooking() {
+        return booking;
+    }
+
+    public void setBooking(List<Booking> booking) {
+        this.booking = booking;
     }
 }

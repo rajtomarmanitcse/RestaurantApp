@@ -20,6 +20,17 @@ public class Restaurant {
     @Column(nullable = false)
     private String location;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "mobileNo", referencedColumnName = "mobile")
+    private Login login;
+
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
+    private List<RestaurantTable> restaurantTables;
+
+    @ManyToOne
+    @JoinColumn(name = "bookingId", nullable = false)
+    private Booking booking;
+
     @Column(nullable = false)
     private String address;
 
@@ -106,5 +117,21 @@ public class Restaurant {
 
     public void setIsDeleted(Boolean deleted) {
         this.isDeleted = deleted;
+    }
+
+    public Login getLogin() {
+        return login;
+    }
+
+    public void setLogin(Login login) {
+        this.login = login;
+    }
+
+    public List<RestaurantTable> getTable() {
+        return restaurantTables;
+    }
+
+    public void setTable(List<RestaurantTable> table) {
+        this.restaurantTables = table;
     }
 }

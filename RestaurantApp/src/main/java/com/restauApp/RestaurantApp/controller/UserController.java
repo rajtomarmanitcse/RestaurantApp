@@ -40,5 +40,4 @@ public class UserController {
         return service.removeUser(userId);
     }
 
-
 }

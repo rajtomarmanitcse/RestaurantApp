@@ -1,6 +1,7 @@
 package com.restauApp.RestaurantApp.serviceImpl;
 
 import com.restauApp.RestaurantApp.Repository.RestaurantRepository;
+import com.restauApp.RestaurantApp.model.Login;
 import com.restauApp.RestaurantApp.model.Restaurant;
 import com.restauApp.RestaurantApp.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,12 @@ public class RestaurantServiceImpl implements RestaurantService {
 
                 if(!restaurant.getLocation().equals(tempRestaurant.get().getLocation()))
                     tempRestaurant.get().setLocation(restaurant.getLocation());
+
+                Login login = tempRestaurant.get().getLogin();
+
+                if(!restaurant.getLogin().getPassWord().equals(login.getPassWord()))
+                    tempRestaurant.get().getLogin().setPassWord(restaurant.getLogin().getPassWord());
+
 
                 return repository.save(tempRestaurant.get());
 
