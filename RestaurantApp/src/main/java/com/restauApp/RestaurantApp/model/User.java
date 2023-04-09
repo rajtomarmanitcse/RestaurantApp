@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Date;
 
 @Entity
 public class User {
@@ -99,13 +98,5 @@ public class User {
 
     public void setIsActive(Boolean active) {
         isActive = active;
-    }
-
-    public void setCreatedDate(String createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public void setModifiedDate(String modifiedDate) {
-        this.modifiedDate = modifiedDate;
     }
 }

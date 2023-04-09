@@ -8,11 +8,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
-    UserRepository repository;
+    private UserRepository repository;
 
     @Override
     public User saveUser(User user) {
@@ -21,12 +22,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> getUserById(Long user_id) {
-        return repository.findById(user_id);
+        Optional<User> tempUser =  repository.findById(user_id);
+
+        if(tempUser.get().getIsActive())
+            return tempUser;
+        else
+            return null;
     }
 
     @Override
     public List<User> getAllUser() {
-        return repository.findAll();
+        List<User> tempUsers =  repository.findAll();
+        return tempUsers
+                .stream()
+                .filter(c -> c.getIsActive() == true)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -34,7 +44,7 @@ public class UserServiceImpl implements UserService {
         if(user.getUserId() != null){
             Optional<User> tempUser = repository.findById(user.getUserId());
 
-            if(tempUser.isPresent() && !user.getCity().equals(tempUser.get().getCity())){
+            if(tempUser.isPresent() && tempUser.get().getIsActive() && !user.getCity().equals(tempUser.get().getCity())){
                 tempUser.get().setCity(user.getCity());
                 return repository.save(tempUser.get());
             }else
@@ -42,5 +52,19 @@ public class UserServiceImpl implements UserService {
         }
 
         return null;
+    }
+
+    @Override
+    public String removeUser(Long userId) {
+
+            Optional<User> tempUser = repository.findById(userId);
+
+            if(tempUser.isPresent() && tempUser.get().getIsActive()){
+                tempUser.get().setIsActive(false);
+                repository.save(tempUser.get());
+                return "User name:- " + tempUser.get().getFirstName() + tempUser.get().getMiddleName() + tempUser.get().getLastName() +" is deleted";
+            }else
+                return "User Not Found !";
+
     }
 }

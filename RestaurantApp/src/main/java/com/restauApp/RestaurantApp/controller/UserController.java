@@ -10,10 +10,10 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin
-@RequestMapping("restaurant/v1.0/user")
+@RequestMapping("restapp/v1.0/user")
 public class UserController {
     @Autowired
-    UserService service;
+    private UserService service;
 
     @PostMapping("/add")
     public User addUser(@RequestBody User user) {
@@ -33,6 +33,11 @@ public class UserController {
     @PutMapping("/update")
     public User updateUser(@RequestBody User user){
         return service.updateUser(user);
+    }
+
+    @PutMapping("/delete/{userId}")
+    public String deleteUser(@PathVariable Long userId){
+        return service.removeUser(userId);
     }
 
 

@@ -13,4 +13,6 @@ public interface UserService {
     List<User> getAllUser();
 
     User updateUser(User user);
+
+    String removeUser(Long userId);
 }
